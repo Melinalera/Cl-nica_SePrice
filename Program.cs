@@ -1,3 +1,7 @@
+using System;
+using System.Windows.Forms;
+using Clínica_SePrice.vistas; // <--- Agregado para encontrar la clase logueo
+
 namespace Clínica_SePrice
 {
     internal static class Program
@@ -11,7 +15,9 @@ namespace Clínica_SePrice
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            
+            // Inicia la aplicación cargando directamente tu pantalla de logueo
+            Application.Run(new logueo()); 
         }
     }
 }
