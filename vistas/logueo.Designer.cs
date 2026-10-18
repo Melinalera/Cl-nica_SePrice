@@ -28,16 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(logueo));
             usuario = new TextBox();
             contraseña = new TextBox();
             button1 = new Button();
             label1 = new Label();
             btnRegistrarse = new Button();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // usuario
             // 
-            usuario.Location = new Point(309, 174);
+            usuario.Location = new Point(309, 214);
             usuario.Name = "usuario";
             usuario.Size = new Size(100, 23);
             usuario.TabIndex = 0;
@@ -46,7 +49,7 @@
             // 
             // contraseña
             // 
-            contraseña.Location = new Point(309, 236);
+            contraseña.Location = new Point(309, 269);
             contraseña.Name = "contraseña";
             contraseña.Size = new Size(100, 23);
             contraseña.TabIndex = 1;
@@ -57,7 +60,7 @@
             // 
             button1.BackColor = SystemColors.MenuHighlight;
             button1.ForeColor = SystemColors.ActiveCaptionText;
-            button1.Location = new Point(318, 286);
+            button1.Location = new Point(318, 313);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 2;
@@ -71,7 +74,7 @@
             label1.BackColor = SystemColors.MenuHighlight;
             label1.Font = new Font("Gloucester MT Extra Condensed", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.AppWorkspace;
-            label1.Location = new Point(264, 120);
+            label1.Location = new Point(258, 159);
             label1.Name = "label1";
             label1.Size = new Size(221, 25);
             label1.TabIndex = 3;
@@ -80,7 +83,7 @@
             // 
             // btnRegistrarse
             // 
-            btnRegistrarse.Location = new Point(318, 330);
+            btnRegistrarse.Location = new Point(318, 369);
             btnRegistrarse.Name = "btnRegistrarse";
             btnRegistrarse.Size = new Size(75, 23);
             btnRegistrarse.TabIndex = 5;
@@ -88,11 +91,22 @@
             btnRegistrarse.UseVisualStyleBackColor = true;
             btnRegistrarse.Click += btnRegistrarse_Click;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(229, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(294, 136);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 6;
+            pictureBox1.TabStop = false;
+            // 
             // logueo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(pictureBox1);
             Controls.Add(btnRegistrarse);
             Controls.Add(label1);
             Controls.Add(button1);
@@ -100,6 +114,8 @@
             Controls.Add(usuario);
             Name = "logueo";
             Text = "Form1";
+            Load += logueo_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -111,5 +127,6 @@
         private Button button1;
         private Label label1;
         private Button btnRegistrarse;
+        private PictureBox pictureBox1;
     }
 }

@@ -80,5 +80,9 @@ namespace Clínica_SePrice.vistas
 
         }
 
-      }
+        private void logueo_Load(object sender, EventArgs e)
+        {
+
+        }
     }
+}
