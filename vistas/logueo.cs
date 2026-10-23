@@ -15,7 +15,7 @@ namespace Clínica_SePrice.vistas
         private void button1_Click(object sender, EventArgs e)
         {
             // Cadena de conexión a MySQL (cambia "tu_contraseña" si tu base de datos tiene una configurada)
-            string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
+            string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=MYSQL;";
 
             // Consulta SQL para verificar el usuario y la contraseña
             string query = "SELECT COUNT(*) FROM usuarios WHERE usuario = @user AND contraseña = @pass";
