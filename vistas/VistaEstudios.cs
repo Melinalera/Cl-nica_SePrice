@@ -10,9 +10,25 @@ namespace Clínica_SePrice.vistas
 {
     public partial class VistaEstudios : Form
     {
-        public VistaEstudios()
+        private Form ventanaAnterior;
+        public VistaEstudios(Form anterior)
         {
             InitializeComponent();
+            ventanaAnterior = anterior; // Guardamos la referencia
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            if (ventanaAnterior != null)
+            {
+                ventanaAnterior.Show(); // Muestra el menú principal de nuevo
+            }
+            this.Close(); // Cierra la vista actual
         }
     }
 }

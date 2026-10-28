@@ -55,26 +55,30 @@ namespace Clínica_SePrice.vistas
         // 4. AQUÍ ES DONDE DEBES AGREGAR LOS EVENTOS DE LOS BOTONES NUEVOS
         private void btnTurnos_Click(object sender, EventArgs e)
         {
-            VistaTurnos ventanaTurnos = new VistaTurnos();
+            VistaTurnos ventanaTurnos = new VistaTurnos(this);
             ventanaTurnos.Show();
+            this.Hide();
         }
 
         private void btnEstudios_Click(object sender, EventArgs e)
         {
-            VistaEstudios ventanaEstudios = new VistaEstudios();
+            VistaEstudios ventanaEstudios = new VistaEstudios(this);
             ventanaEstudios.Show();
+            this.Hide();
         }
 
         private void btnHistorial_Click(object sender, EventArgs e)
         {
-            VistaHistorial ventanaHistorial = new VistaHistorial();
+            VistaHistorial ventanaHistorial = new VistaHistorial(this);
             ventanaHistorial.Show();
+            this.Hide(); // Ocultamos el menú principal
         }
 
         private void btnInsumos_Click(object sender, EventArgs e)
         {
-            VistaInsumos ventanaInsumos = new VistaInsumos();
+            VistaInsumos ventanaInsumos = new VistaInsumos(this);
             ventanaInsumos.Show();
+            this.Hide();
         }
     }
 }
