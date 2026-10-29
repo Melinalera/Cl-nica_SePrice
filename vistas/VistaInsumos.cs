@@ -6,16 +6,18 @@ using MySql.Data.MySqlClient;
 
 namespace Clínica_SePrice.vistas
 {
-    public partial class FrmControlInsumos : Form
+    // Cambiamos el nombre de la clase para que se llame VistaInsumos
+    public partial class VistaInsumos : Form
     {
-        // Cadena de conexión a tu base de datos MySQL (ajusta la tilde o clave si es necesario)
+        private Form ventanaAnterior; // Recibimos el menú principal
         private string cadenaConexion = "server=localhost; database=clinica_seprice; uid=root; pwd=MYSQL;";
 
-        public FrmControlInsumos()
+        // Modificamos el constructor para aceptar la ventana anterior
+        public VistaInsumos(Form anterior)
         {
             InitializeComponent();
+            ventanaAnterior = anterior;
 
-            // Vinculamos los eventos explícitamente para que funcionen sin depender del diseñador gráfico
             this.Load += FrmControlInsumos_Load;
             this.btnNuevo.Click += btnNuevo_Click;
             this.btnAtras.Click += btnAtras_Click;
@@ -28,7 +30,6 @@ namespace Clínica_SePrice.vistas
             CargarGrillaInsumos();
         }
 
-        // Método para traer los insumos de la base de datos
         private void CargarGrillaInsumos()
         {
             using (MySqlConnection conexion = new MySqlConnection(cadenaConexion))
@@ -43,8 +44,6 @@ namespace Clínica_SePrice.vistas
                         DataTable dt = new DataTable();
                         adaptador.Fill(dt);
                         dgvInsumos.DataSource = dt;
-
-                        // Forzar el estiramiento proporcional de las columnas al cargar datos
                         dgvInsumos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                         dgvInsumos.AllowUserToAddRows = false;
                     }
@@ -56,17 +55,15 @@ namespace Clínica_SePrice.vistas
             }
         }
 
-        // Botón para abrir el formulario de nuevo insumo
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             FrmNuevoInsumo frm = new FrmNuevoInsumo();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                CargarGrillaInsumos(); // Recarga la tabla al guardar uno nuevo
+                CargarGrillaInsumos();
             }
         }
 
-        // Buscador en tiempo real por nombre o número de lote
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             if (dgvInsumos.DataSource is DataTable dt)
@@ -75,24 +72,24 @@ namespace Clínica_SePrice.vistas
             }
         }
 
-        // Botón para volver atrás
+        // Botón atrás adaptado para volver al menú de tu compañero
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            if (ventanaAnterior != null)
+            {
+                ventanaAnterior.Show();
+            }
+            this.Close();
         }
 
-        // Alertas visuales automáticas en la grilla (Rojo y Amarillo)
         private void dgvInsumos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= dgvInsumos.Rows.Count || dgvInsumos.Rows[e.RowIndex].IsNewRow)
                 return;
 
             DataGridViewRow fila = dgvInsumos.Rows[e.RowIndex];
-
-            // Resetear color predeterminado
             fila.DefaultCellStyle.BackColor = Color.White;
 
-            // 1. Alerta por nivel de stock
             if (fila.Cells["stock_actual"].Value != DBNull.Value && fila.Cells["stock_minimo"].Value != DBNull.Value)
             {
                 int stockActual = Convert.ToInt32(fila.Cells["stock_actual"].Value);
@@ -100,15 +97,14 @@ namespace Clínica_SePrice.vistas
 
                 if (stockActual <= 0)
                 {
-                    fila.DefaultCellStyle.BackColor = Color.LightCoral; // Sin stock
+                    fila.DefaultCellStyle.BackColor = Color.LightCoral;
                 }
                 else if (stockActual <= stockMinimo)
                 {
-                    fila.DefaultCellStyle.BackColor = Color.LightYellow; // Stock bajo
+                    fila.DefaultCellStyle.BackColor = Color.LightYellow;
                 }
             }
 
-            // 2. Alerta por fecha de vencimiento (solo comparando fecha sin horas)
             if (fila.Cells["fecha_vencimiento"].Value != DBNull.Value)
             {
                 DateTime fechaVenc = Convert.ToDateTime(fila.Cells["fecha_vencimiento"].Value).Date;
@@ -116,15 +112,14 @@ namespace Clínica_SePrice.vistas
 
                 if (fechaVenc < hoy)
                 {
-                    fila.DefaultCellStyle.BackColor = Color.LightCoral; // Vencido
+                    fila.DefaultCellStyle.BackColor = Color.LightCoral;
                 }
                 else if (fechaVenc <= hoy.AddDays(30) && fila.DefaultCellStyle.BackColor != Color.LightCoral)
                 {
-                    fila.DefaultCellStyle.BackColor = Color.LightYellow; // Próximo a vencer (dentro de 30 días)
+                    fila.DefaultCellStyle.BackColor = Color.LightYellow;
                 }
             }
         }
-
 
         private void InitializeComponent()
         {
@@ -133,60 +128,47 @@ namespace Clínica_SePrice.vistas
             txtBuscar = new TextBox();
             btnAtras = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvInsumos).BeginInit();
-            SuspendLayout();      
-            //
-            // dgvInsumos
-            // 
+            SuspendLayout();
+
+            dgvInsumos.AllowUserToAddRows = false;
+            dgvInsumos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvInsumos.BackgroundColor = Color.White;
             dgvInsumos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInsumos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // <--- Ajusta el ancho automáticamente
-            dgvInsumos.AllowUserToAddRows = false; // <--- Evita la fila vacía en rojo
             dgvInsumos.Location = new Point(12, 60);
             dgvInsumos.Name = "dgvInsumos";
             dgvInsumos.Size = new Size(760, 370);
             dgvInsumos.TabIndex = 0;
-            // 
-            // btnNuevo
-            // 
+
             btnNuevo.Location = new Point(12, 20);
             btnNuevo.Name = "btnNuevo";
             btnNuevo.Size = new Size(110, 25);
             btnNuevo.TabIndex = 1;
             btnNuevo.Text = "Nuevo insumo";
             btnNuevo.UseVisualStyleBackColor = true;
-            // 
-            // txtBuscar
-            // 
+
             txtBuscar.Location = new Point(140, 21);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(200, 23);
             txtBuscar.TabIndex = 2;
-            // 
-            // btnAtras
-            // 
+
             btnAtras.Location = new Point(662, 20);
             btnAtras.Name = "btnAtras";
             btnAtras.Size = new Size(110, 25);
             btnAtras.TabIndex = 3;
             btnAtras.Text = "Atrás";
             btnAtras.UseVisualStyleBackColor = true;
-            // 
-            // FrmControlInsumos
-            // 
+
             ClientSize = new Size(784, 461);
             Controls.Add(btnAtras);
             Controls.Add(txtBuscar);
             Controls.Add(btnNuevo);
             Controls.Add(dgvInsumos);
-            Name = "FrmControlInsumos";
+            Name = "VistaInsumos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Control y Gestión de Insumos y Stock";
             ((System.ComponentModel.ISupportInitialize)dgvInsumos).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
-            dgvInsumos.AllowUserToAddRows = false;
-
-
         }
 
         private DataGridView dgvInsumos;

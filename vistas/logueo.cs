@@ -1,5 +1,4 @@
-﻿// vistas\logueo.cs
-using System;
+﻿using System;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -14,11 +13,16 @@ namespace Clínica_SePrice.vistas
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Cadena de conexión a MySQL (cambia "tu_contraseña" si tu base de datos tiene una configurada)
-            string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=MYSQL;";
 
-            // Consulta SQL para verificar el usuario y la contraseña
-            string query = "SELECT COUNT(*) FROM usuarios WHERE usuario = @user AND contraseña = @pass";
+            // Cadena de conexión a MySQL (cambia "tu_contraseña" si tu base de datos tiene una configurada)
+            string cadenaConexion = "server=localhost; database=clinica_seprice; uid=root; pwd=MYSQL;";
+
+            // Cadena de conexión a MySQL
+            //string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
+
+
+            // Modificamos la consulta para traernos el rol y el nombre del usuario
+            string query = "SELECT rol, nombre FROM usuarios WHERE usuario = @user AND contraseña = @pass";
 
             using (MySqlConnection conexion = new MySqlConnection(cadenaConexion))
             {
@@ -29,23 +33,29 @@ namespace Clínica_SePrice.vistas
                     using (MySqlCommand cmd = new MySqlCommand(query, conexion))
                     {
                         // Asignamos los valores de tus cajas de texto
-                        cmd.Parameters.AddWithValue("@user", usuario.Text);
-                        cmd.Parameters.AddWithValue("@pass", contraseña.Text);
+                        cmd.Parameters.AddWithValue("@user", usuario.Text.Trim());
+                        cmd.Parameters.AddWithValue("@pass", contraseña.Text.Trim());
 
-                        int resultado = Convert.ToInt32(cmd.ExecuteScalar());
-
-                        if (resultado > 0)
+                        // Usamos ExecuteReader para leer los datos que devuelve la consulta
+                        using (MySqlDataReader lector = cmd.ExecuteReader())
                         {
-                            MessageBox.Show("¡Ingreso exitoso!", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (lector.Read())
+                            {
+                                // Extraemos el rol y el nombre directamente de la base de datos
+                                string rolUsuario = lector["rol"].ToString();
+                                string nombreUsuario = lector["nombre"].ToString();
 
-                            // Abre la pantalla principal y oculta el login
-                            pantalla_principal principal = new pantalla_principal();
-                            //  principal.Show();
-                            this.Hide();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Usuario o contraseña incorrectos.", "Error de acceso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show($"¡Bienvenido, {nombreUsuario}!", "Ingreso exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                // Abrimos la pantalla principal pasándole el rol por parámetro y ocultamos el login
+                                pantalla_principal principal = new pantalla_principal(rolUsuario);
+                                principal.Show();
+                                this.Hide();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Usuario o contraseña incorrectos.", "Error de acceso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
                     }
                 }
@@ -74,10 +84,9 @@ namespace Clínica_SePrice.vistas
 
         private void btnRegistrarse_Click(object sender, EventArgs e)
         {
-            //Instanciar el formulario de registro
+            // Instanciar el formulario de registro
             RegistroForm ventanaRegistro = new RegistroForm();
             ventanaRegistro.Show();
-
         }
 
         private void logueo_Load(object sender, EventArgs e)

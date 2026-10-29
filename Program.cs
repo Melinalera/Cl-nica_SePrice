@@ -17,7 +17,7 @@ namespace Clínica_SePrice
             ApplicationConfiguration.Initialize();
             
             // Inicia la aplicación cargando directamente tu pantalla de logueo
-            Application.Run(new FrmControlInsumos()); 
+            Application.Run(new logueo()); 
         }
     }
 }
