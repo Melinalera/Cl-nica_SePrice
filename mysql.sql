@@ -1,7 +1,4 @@
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234';
-FLUSH PRIVILEGES;
-
-USE clínica_seprice;
+USE clinica_seprice;
 
 -- 1. Limpieza previa de tablas en orden correcto
 DROP TABLE IF EXISTS administrativos;
@@ -72,3 +69,13 @@ SELECT * FROM usuarios;
 SELECT * FROM medicos;
 SELECT * FROM pacientes;
 SELECT * FROM administrativos;
+
+CREATE TABLE IF NOT EXISTS insumos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    stock_actual INT NOT NULL,
+    stock_minimo INT NOT NULL,
+    numero_lote VARCHAR(50) NOT NULL,
+    fecha_vencimiento DATE NOT NULL
+);
