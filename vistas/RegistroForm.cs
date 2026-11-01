@@ -13,7 +13,7 @@ namespace Clínica_SePrice.vistas
     public partial class RegistroForm : Form
     {
         // Cadena de conexión a tu base de datos MySQL
-        private string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
+        private string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=MYSQL;";
 
         public RegistroForm()
         {
