@@ -15,10 +15,10 @@ namespace Clínica_SePrice.vistas
         {
 
             // Cadena de conexión a MySQL (cambia "tu_contraseña" si tu base de datos tiene una configurada)
-            string cadenaConexion = "server=localhost; database=clinica_seprice; uid=root; pwd=MYSQL;";
+           // string cadenaConexion = "server=localhost; database=clinica_seprice; uid=root; pwd=MYSQL;";
 
             // Cadena de conexión a MySQL
-            //string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
+            string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
 
 
             // Modificamos la consulta para traernos el rol y el nombre del usuario
