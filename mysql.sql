@@ -1,4 +1,4 @@
-USE clinica_seprice;
+USE clínica_seprice;
 
 -- 1. Limpieza previa de tablas en orden correcto
 DROP TABLE IF EXISTS administrativos;
@@ -70,6 +70,13 @@ SELECT * FROM medicos;
 SELECT * FROM pacientes;
 SELECT * FROM administrativos;
 
+CREATE TABLE IF NOT exists turnosConsultoriosMédicos(
+id_turno INT auto_increment primary key,
+especialidad varchar (50) not null,
+fecha date not null,
+dni_paciente varchar(20),
+estado varchar (20) default 'Reservado'
+);
 CREATE TABLE IF NOT EXISTS insumos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
