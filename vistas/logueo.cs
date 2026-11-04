@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -14,17 +14,11 @@ namespace Clínica_SePrice.vistas
         private void button1_Click(object sender, EventArgs e)
         {
 
-            // Cadena de conexión a MySQL (cambia "tu_contraseña" si tu base de datos tiene una configurada)
-            string cadenaConexion = "server=localhost; database=clinica_seprice; uid=root; pwd=MYSQL;";
-
-            // Cadena de conexión a MySQL
-            //string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
-
 
             // Modificamos la consulta para traernos el rol y el nombre del usuario
             string query = "SELECT rol, nombre FROM usuarios WHERE usuario = @user AND contraseña = @pass";
 
-            using (MySqlConnection conexion = new MySqlConnection(cadenaConexion))
+            using (MySqlConnection conexion = new MySqlConnection(ConexionBaseDatos.CadenaConexion))
             {
                 try
                 {

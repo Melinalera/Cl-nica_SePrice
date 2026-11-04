@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -8,7 +8,6 @@ namespace Clínica_SePrice.vistas
     public partial class FrmNuevoInsumo : Form
     {
         // Conexión directa y estable a MySQL
-        private string cadenaConexion = "server=127.0.0.1; database=clinica_seprice; uid=root; pwd=MYSQL; CharSet=utf8mb4;";
 
         // Controles de la interfaz declarados explícitamente (cero conflictos de diseñador)
         private TextBox txtNombre;
@@ -19,21 +18,43 @@ namespace Clínica_SePrice.vistas
         private DateTimePicker dtpFechaVencimiento;
         private Button btnGuardar;
         private Button btnCancelar;
+        private readonly ErrorProvider errores  = new ErrorProvider();
 
         public FrmNuevoInsumo()
         {
             InitializeComponentCustom();
+            errores.ContainerControl = this;
+            errores.BlinkStyle = ErrorBlinkStyle.NeverBlink;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            // 1. Validación básica de campos vacíos
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtStockActual.Text) ||
-                string.IsNullOrWhiteSpace(txtStockMinimo.Text) ||
-                string.IsNullOrWhiteSpace(txtLote.Text))
+            // 1. Validar campos obligatorios: marcar los vacíos y enfocar el primero.
+
+            errores.Clear();
+
+            TextBox[] obligatorios =
             {
-                MessageBox.Show("Por favor, complete los campos obligatorios.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNombre,
+                txtStockActual,
+                txtStockMinimo,
+                txtLote
+            };
+
+            TextBox? primerIncompleto = null;
+
+            foreach (TextBox campo in obligatorios)
+            {
+                if (string.IsNullOrWhiteSpace(campo.Text))
+                {
+                    errores.SetError(campo, "Complete este campo.");
+                    primerIncompleto ??= campo;
+                }
+            }
+
+            if (primerIncompleto != null)
+            {
+                primerIncompleto.Focus();
                 return;
             }
 
@@ -41,13 +62,15 @@ namespace Clínica_SePrice.vistas
             if (!int.TryParse(txtStockActual.Text.Trim(), out int stockActual) ||
                 !int.TryParse(txtStockMinimo.Text.Trim(), out int stockMinimo))
             {
-                MessageBox.Show("El stock actual y mínimo deben ser números enteros.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("El stock actual y mínimo deben ser números enteros.", "Dato inválido",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (stockMinimo > stockActual)
             {
-                MessageBox.Show("El stock mínimo no puede ser mayor que el stock actual.", "Validación de Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("El stock mínimo no puede ser mayor que el stock actual.", "Validación de Stock",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -55,7 +78,7 @@ namespace Clínica_SePrice.vistas
             // 3. Inserción síncrona limpia a MySQL
             try
             {
-                using (MySqlConnection conexion = new MySqlConnection(cadenaConexion))
+                using (MySqlConnection conexion = new MySqlConnection(ConexionBaseDatos.CadenaConexion))
                 {
                     conexion.Open();
                     string query = "INSERT INTO insumos (nombre, descripcion, stock_actual, stock_minimo, numero_lote, fecha_vencimiento) " +
