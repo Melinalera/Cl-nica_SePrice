@@ -1,4 +1,4 @@
-USE clínica_seprice;
+USE clinica_seprice;
 
 -- 1. Limpieza previa de tablas en orden correcto
 DROP TABLE IF EXISTS administrativos;

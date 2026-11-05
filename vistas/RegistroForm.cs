@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +12,6 @@ namespace Clínica_SePrice.vistas
 {
     public partial class RegistroForm : Form
     {
-        // Cadena de conexión a tu base de datos MySQL
-        private string cadenaConexion = "server=localhost; database=clínica_seprice; uid=root; pwd=1234;";
 
         public RegistroForm()
         {
@@ -64,7 +62,7 @@ namespace Clínica_SePrice.vistas
                 else if (administrativo.Checked) rolSeleccionado = "administrativo"; // Corregido por seguridad en minúsculas como tu BD
 
                 // 5. Ejecutar la inserción en la Base de Datos
-                using (MySqlConnection conexion = new MySqlConnection(cadenaConexion))
+                using (MySqlConnection conexion = new MySqlConnection(ConexionBaseDatos.CadenaConexion))
                 {
                     try
                     {
