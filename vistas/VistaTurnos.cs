@@ -19,6 +19,20 @@ namespace Clínica_SePrice.vistas
             ventanaAnterior = anterior; // Guardamos la referencia
 
             btnAcreditar.Visible = rol == "administrativo";
+            var btnAtencion = new Button
+            {
+                Name = "btnRegistrarAtencion",
+                Text = "Registrar atención",
+                Location = new Point(286, 400),
+                Size = new Size(239, 27),
+                Visible = rol == "administrativo"
+            };
+            btnAtencion.Click += (_, _) =>
+            {
+                using var ventana = new VistaRegistrarAtencion();
+                ventana.ShowDialog(this);
+            };
+            Controls.Add(btnAtencion);
 
         }
 

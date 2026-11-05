@@ -32,6 +32,7 @@
             btnEstudios = new Button();
             btnInsumos = new Button();
             btnHistorial = new Button();
+            btnCerrarSesion = new Button();
             SuspendLayout();
             // 
             // btnTurnos
@@ -70,6 +71,20 @@
             btnHistorial.Text = "Historial Clínico";
             btnHistorial.UseVisualStyleBackColor = true;
             // 
+            // btnCerrarSesion
+            //
+            btnCerrarSesion.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCerrarSesion.BackColor = Color.Teal;
+            btnCerrarSesion.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
+            btnCerrarSesion.ForeColor = SystemColors.ControlLight;
+            btnCerrarSesion.Location = new Point(658, 12);
+            btnCerrarSesion.Name = "btnCerrarSesion";
+            btnCerrarSesion.Size = new Size(130, 27);
+            btnCerrarSesion.TabIndex = 4;
+            btnCerrarSesion.Text = "Cerrar sesión";
+            btnCerrarSesion.UseVisualStyleBackColor = false;
+            btnCerrarSesion.Click += btnCerrarSesion_Click;
+            //
             // pantalla_principal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -79,6 +94,7 @@
             Controls.Add(btnHistorial);
             Controls.Add(btnEstudios);
             Controls.Add(btnTurnos);
+            Controls.Add(btnCerrarSesion);
             Name = "pantalla_principal";
             Text = "pantalla_principal";
             ResumeLayout(false);
@@ -90,5 +106,6 @@
         private Button btnEstudios;
         private Button btnInsumos;
         private Button btnHistorial;
+        private Button btnCerrarSesion;
     }
 }

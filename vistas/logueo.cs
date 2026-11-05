@@ -43,6 +43,24 @@ namespace Clínica_SePrice.vistas
 
                                 // Abrimos la pantalla principal pasándole el rol por parámetro y ocultamos el login
                                 pantalla_principal principal = new pantalla_principal(rolUsuario);
+                                principal.FormClosed += (_, _) =>
+                                {
+                                    if (!principal.SesionCerrada || IsDisposed)
+                                        return;
+
+                                    // Cerrar las ventanas que pudieran quedar de la sesión anterior.
+                                    foreach (Form ventana in Application.OpenForms.Cast<Form>().ToArray())
+                                    {
+                                        if (ventana != this && ventana != principal)
+                                            ventana.Close();
+                                    }
+
+                                    usuario.Clear();
+                                    contraseña.Clear();
+                                    Show();
+                                    Activate();
+                                    usuario.Focus();
+                                };
                                 principal.Show();
                                 this.Hide();
                             }

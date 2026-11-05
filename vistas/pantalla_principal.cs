@@ -6,6 +6,7 @@ namespace Clínica_SePrice.vistas
     public partial class pantalla_principal : Form
     {
         private string rolActual;
+        internal bool SesionCerrada { get; private set; }
 
         // 1. Constructor que recibe el rol
         public pantalla_principal(string rol)
@@ -20,6 +21,21 @@ namespace Clínica_SePrice.vistas
             btnEstudios.Click += btnEstudios_Click;
             btnHistorial.Click += btnHistorial_Click;
             btnInsumos.Click += btnInsumos_Click;
+            FormClosed += pantalla_principal_FormClosed;
+            var btnHonorarios = new Button
+            {
+                Name = "btnHonorarios",
+                Text = "Liquidación de honorarios",
+                Location = new Point(285, 254),
+                Size = new Size(200, 27),
+                Visible = rolActual == "administrativo"
+            };
+            btnHonorarios.Click += (_, _) =>
+            {
+                using var ventana = new VistaLiquidacionHonorarios();
+                ventana.ShowDialog(this);
+            };
+            Controls.Add(btnHonorarios);
 
             // Ejecutamos la configuración visual inmediatamente
             ConfigurarInterfazSegunRol();
@@ -47,9 +63,17 @@ namespace Clínica_SePrice.vistas
         }
 
         // 3. Evento para cerrar la aplicación al cerrar la ventana principal
-        private void pantalla_principal_FormClosed(object sender, FormClosedEventArgs e)
+        private void pantalla_principal_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            Application.Exit();
+            if (!SesionCerrada)
+                Application.Exit();
+        }
+
+        private void btnCerrarSesion_Click(object? sender, EventArgs e)
+        {
+            SesionCerrada = true;
+            rolActual = "";
+            Close();
         }
 
         // 4. AQUÍ ES DONDE DEBES AGREGAR LOS EVENTOS DE LOS BOTONES NUEVOS
@@ -62,7 +86,7 @@ namespace Clínica_SePrice.vistas
 
         private void btnEstudios_Click(object sender, EventArgs e)
         {
-            VistaEstudios ventanaEstudios = new VistaEstudios(this);
+            VistaEstudios ventanaEstudios = new VistaEstudios(this, rolActual);
             ventanaEstudios.Show();
             this.Hide();
         }
