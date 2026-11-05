@@ -34,6 +34,7 @@
             ConsultoriosExternos = new Button();
             EstudiosClínicos = new Button();
             pictureBox1 = new PictureBox();
+            btnAcreditar = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -91,11 +92,23 @@
             pictureBox1.TabIndex = 8;
             pictureBox1.TabStop = false;
             // 
+            // btnAcreditar
+            // 
+            btnAcreditar.Location = new Point(286, 360);
+            btnAcreditar.Name = "btnAcreditar";
+            btnAcreditar.Size = new Size(239, 27);
+            btnAcreditar.TabIndex = 9;
+            btnAcreditar.Text = "Acreditar Paciente";
+            btnAcreditar.UseVisualStyleBackColor = true;
+            btnAcreditar.Visible = false;
+            btnAcreditar.Click += btnAcreditar_Click;
+            // 
             // VistaTurnos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnAcreditar);
             Controls.Add(pictureBox1);
             Controls.Add(EstudiosClínicos);
             Controls.Add(ConsultoriosExternos);
@@ -115,5 +128,6 @@
         private Button ConsultoriosExternos;
         private Button EstudiosClínicos;
         private PictureBox pictureBox1;
+        private Button btnAcreditar;
     }
 }

@@ -13,10 +13,13 @@ namespace Clínica_SePrice.vistas
         private Form ventanaAnterior;
 
         // El constructor OBLIGATORIAMENTE debe recibir esto:
-        public VistaTurnos(Form anterior)
+        public VistaTurnos(Form anterior, string rol = "")
         {
             InitializeComponent();
             ventanaAnterior = anterior; // Guardamos la referencia
+
+            btnAcreditar.Visible = rol == "administrativo";
+
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
@@ -41,7 +44,13 @@ namespace Clínica_SePrice.vistas
 
         private void EstudiosClínicos_Click(object sender, EventArgs e)
         {
-          
+
+        }
+
+        private void btnAcreditar_Click(object sender, EventArgs e)
+        {
+            using var ventana = new VistaAcreditacion();
+            ventana.ShowDialog(this);
         }
     }
 }

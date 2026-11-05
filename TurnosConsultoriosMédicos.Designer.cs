@@ -98,7 +98,6 @@
             Neumonología.TabStop = true;
             Neumonología.Text = " Neumonología";
             Neumonología.UseVisualStyleBackColor = true;
-            Neumonología.CheckedChanged += this.Neumonología_CheckedChanged;
             // 
             // Neurología
             // 
@@ -220,11 +219,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
-        }
-
-        private void Neumonología_CheckedChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

@@ -55,7 +55,7 @@ namespace Clínica_SePrice.vistas
         // 4. AQUÍ ES DONDE DEBES AGREGAR LOS EVENTOS DE LOS BOTONES NUEVOS
         private void btnTurnos_Click(object sender, EventArgs e)
         {
-            VistaTurnos ventanaTurnos = new VistaTurnos(this);
+            VistaTurnos ventanaTurnos = new VistaTurnos(this, rolActual);
             ventanaTurnos.Show();
             this.Hide();
         }
