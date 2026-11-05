@@ -58,19 +58,20 @@ namespace Clínica_SePrice.vistas
                 return;
             }
 
-            // 2. Validación de tipos numéricos enteros
-            if (!int.TryParse(txtStockActual.Text.Trim(), out int stockActual) ||
-                !int.TryParse(txtStockMinimo.Text.Trim(), out int stockMinimo))
-            {
-                MessageBox.Show("El stock actual y mínimo deben ser números enteros.", "Dato inválido",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            // 2. Validar que ambos stocks sean enteros iguales o mayores que cero.
+            bool stockActualValido = int.TryParse(txtStockActual.Text.Trim(), out int stockActual)
+                && stockActual >= 0;
+            bool stockMinimoValido = int.TryParse(txtStockMinimo.Text.Trim(), out int stockMinimo)
+                && stockMinimo >= 0;
 
-            if (stockMinimo > stockActual)
+            if (!stockActualValido)
+                errores.SetError(txtStockActual, "Ingresá un número entero igual o mayor que cero.");
+            if (!stockMinimoValido)
+                errores.SetError(txtStockMinimo, "Ingresá un número entero igual o mayor que cero.");
+
+            if (!stockActualValido || !stockMinimoValido)
             {
-                MessageBox.Show("El stock mínimo no puede ser mayor que el stock actual.", "Validación de Stock",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                (stockActualValido ? txtStockMinimo : txtStockActual).Focus();
                 return;
             }
 

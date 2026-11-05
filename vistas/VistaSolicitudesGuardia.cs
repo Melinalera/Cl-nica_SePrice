@@ -73,11 +73,27 @@ namespace Clínica_SePrice.vistas
                 Text = "Cancelar solicitud", Location = new Point(710, 89), Size = new Size(145, 27)
             };
             cancelar.Click += (_, _) => CambiarEstado("Cancelado");
+            var resultado = new Button
+            {
+                Text = "Cargar / Ver resultado", Location = new Point(790, 12), Size = new Size(190, 27),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right
+            };
+            resultado.Click += (_, _) =>
+            {
+                aviso.Text = "";
+                if (grilla.CurrentRow?.DataBoundItem is not DataRowView solicitud)
+                {
+                    aviso.Text = "Seleccioná una solicitud.";
+                    return;
+                }
+                using var ventana = new VistaResultadoEstudioGuardia((int)solicitud["id_solicitud"]);
+                ventana.ShowDialog(this);
+            };
             Controls.AddRange(new Control[]
             {
                 volver, titulo,
                 new Label { Text = "Estado", Location = new Point(20, 94), AutoSize = true },
-                cmbEstado, actualizar, iniciar, finalizar, cancelar, grilla, aviso
+                cmbEstado, actualizar, iniciar, finalizar, cancelar, resultado, grilla, aviso
             });
             cmbEstado.SelectedIndexChanged += (_, _) => CargarSolicitudes();
             Load += (_, _) => CargarSolicitudes();

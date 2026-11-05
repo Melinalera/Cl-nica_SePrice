@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Text;
 using MySql.Data.MySqlClient;
 
 namespace Clínica_SePrice.vistas
@@ -43,6 +44,7 @@ namespace Clínica_SePrice.vistas
                     {
                         DataTable dt = new DataTable();
                         adaptador.Fill(dt);
+                        dt.DefaultView.RowFilter = CrearFiltroBusqueda(txtBuscar.Text);
                         dgvInsumos.DataSource = dt;
                         dgvInsumos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                         dgvInsumos.AllowUserToAddRows = false;
@@ -64,7 +66,7 @@ namespace Clínica_SePrice.vistas
             }
         }
 
-        private void RegistrarMovimiento(bool esSalida)
+        private void RegistrarMovimiento(bool esSalida, bool esCompra = false)
         {
             if (dgvInsumos.CurrentRow?.DataBoundItem is not DataRowView lote)
             {
@@ -73,7 +75,7 @@ namespace Clínica_SePrice.vistas
             }
 
             using var formulario = new FrmMovimientoInsumo(
-                (int)lote["id"], (string)lote["nombre"], (string)lote["numero_lote"], esSalida);
+                (int)lote["id"], (string)lote["nombre"], (string)lote["numero_lote"], esSalida, esCompra);
 
             if (formulario.ShowDialog(this) == DialogResult.OK)
                 CargarGrillaInsumos();
@@ -152,8 +154,27 @@ namespace Clínica_SePrice.vistas
         {
             if (dgvInsumos.DataSource is DataTable dt)
             {
-                dt.DefaultView.RowFilter = $"nombre LIKE '%{txtBuscar.Text.Trim()}%' OR numero_lote LIKE '%{txtBuscar.Text.Trim()}%'";
+                dt.DefaultView.RowFilter = CrearFiltroBusqueda(txtBuscar.Text);
             }
+        }
+
+        private static string CrearFiltroBusqueda(string texto)
+        {
+            // Tratar las comillas y los comodines como parte literal de la búsqueda.
+            var busqueda = new StringBuilder();
+            foreach (char caracter in texto.Trim())
+            {
+                busqueda.Append(caracter switch
+                {
+                    '\'' => "''",
+                    '[' => "[[]",
+                    ']' => "[]]",
+                    '*' => "[*]",
+                    '%' => "[%]",
+                    _ => caracter.ToString()
+                });
+            }
+            return $"nombre LIKE '%{busqueda}%' OR numero_lote LIKE '%{busqueda}%'";
         }
 
         // Botón atrás adaptado para volver al menú
@@ -278,6 +299,27 @@ namespace Clínica_SePrice.vistas
             };
             btnHistorial.Click += btnHistorial_Click;
 
+            var btnCompra = new Button
+            {
+                Location = new Point(622, 12),
+                Size = new Size(130, 27),
+                Text = "Registrar compra",
+                UseVisualStyleBackColor = true
+            };
+            btnCompra.Click += (_, _) => RegistrarMovimiento(esSalida: false, esCompra: true);
+            var btnVerCompras = new Button
+            {
+                Location = new Point(480, 12),
+                Size = new Size(130, 27),
+                Text = "Ver compras",
+                UseVisualStyleBackColor = true
+            };
+            btnVerCompras.Click += (_, _) =>
+            {
+                using var ventana = new VistaComprasInsumos();
+                ventana.ShowDialog(this);
+            };
+
             btnAtras.BackColor = Color.Teal;
             btnAtras.Font = new Font("Tahoma", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAtras.ForeColor = SystemColors.ControlLight;
@@ -297,6 +339,8 @@ namespace Clínica_SePrice.vistas
             Controls.Add(btnEntrada);
             Controls.Add(btnSalida);
             Controls.Add(btnHistorial);
+            Controls.Add(btnCompra);
+            Controls.Add(btnVerCompras);
             Controls.Add(dgvInsumos);
             Name = "VistaInsumos";
             StartPosition = FormStartPosition.CenterScreen;
