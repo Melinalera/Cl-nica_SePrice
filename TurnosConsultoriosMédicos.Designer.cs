@@ -33,7 +33,7 @@
             label1 = new Label();
             Dermatología = new RadioButton();
             Gastroenterología = new RadioButton();
-            radioButton4 = new RadioButton();
+            Neumonología = new RadioButton();
             Neurología = new RadioButton();
             Cardiología = new RadioButton();
             dateTimePicker1 = new DateTimePicker();
@@ -43,7 +43,6 @@
             button2 = new Button();
             button3 = new Button();
             label2 = new Label();
-            label3 = new Label();
             comboBox1 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -89,16 +88,17 @@
             Gastroenterología.Text = "Gastroenterología";
             Gastroenterología.UseVisualStyleBackColor = true;
             // 
-            // radioButton4
+            // Neumonología
             // 
-            radioButton4.AutoSize = true;
-            radioButton4.Location = new Point(35, 278);
-            radioButton4.Name = "radioButton4";
-            radioButton4.Size = new Size(108, 19);
-            radioButton4.TabIndex = 12;
-            radioButton4.TabStop = true;
-            radioButton4.Text = " Neumonología";
-            radioButton4.UseVisualStyleBackColor = true;
+            Neumonología.AutoSize = true;
+            Neumonología.Location = new Point(35, 278);
+            Neumonología.Name = "Neumonología";
+            Neumonología.Size = new Size(108, 19);
+            Neumonología.TabIndex = 12;
+            Neumonología.TabStop = true;
+            Neumonología.Text = " Neumonología";
+            Neumonología.UseVisualStyleBackColor = true;
+            Neumonología.CheckedChanged += this.Neumonología_CheckedChanged;
             // 
             // Neurología
             // 
@@ -186,15 +186,6 @@
             label2.Text = "label2";
             label2.Click += label2_Click;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(0, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(38, 15);
-            label3.TabIndex = 24;
-            label3.Text = "label3";
-            // 
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
@@ -209,7 +200,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(comboBox1);
-            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -218,7 +208,7 @@
             Controls.Add(monthCalendar1);
             Controls.Add(dateTimePicker1);
             Controls.Add(Neurología);
-            Controls.Add(radioButton4);
+            Controls.Add(Neumonología);
             Controls.Add(Gastroenterología);
             Controls.Add(Dermatología);
             Controls.Add(Cardiología);
@@ -230,6 +220,11 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void Neumonología_CheckedChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -251,8 +246,8 @@
         private Button button2;
         private Button button3;
         private Label label2;
-        private Label label3;
         private Button btnAceptar;
         private ComboBox comboBox1;
+        private RadioButton Neumonología;
     }
 }
