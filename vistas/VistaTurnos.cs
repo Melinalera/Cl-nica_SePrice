@@ -27,5 +27,21 @@ namespace Clínica_SePrice.vistas
             }
             this.Close(); // Cierra la vista actual
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ConsultoriosExternos_click(object sender, EventArgs e)
+        {
+            TurnosConsultoriosMédicos turnosConsultoriosMédicos = new TurnosConsultoriosMédicos();
+            turnosConsultoriosMédicos.Show();
+        }
+
+        private void EstudiosClínicos_Click(object sender, EventArgs e)
+        {
+          
+        }
     }
 }
