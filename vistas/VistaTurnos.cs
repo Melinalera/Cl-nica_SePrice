@@ -33,6 +33,20 @@ namespace Clínica_SePrice.vistas
                 ventana.ShowDialog(this);
             };
             Controls.Add(btnAtencion);
+            var btnAgendas = new Button
+            {
+                Name = "btnAgendas",
+                Text = "Configurar agendas",
+                Location = new Point(286, 273),
+                Size = new Size(239, 27),
+                Visible = rol == "administrativo"
+            };
+            btnAgendas.Click += (_, _) =>
+            {
+                using var ventana = new VistaAgendasConsultorios();
+                ventana.ShowDialog(this);
+            };
+            Controls.Add(btnAgendas);
 
         }
 
@@ -52,8 +66,8 @@ namespace Clínica_SePrice.vistas
 
         private void ConsultoriosExternos_click(object sender, EventArgs e)
         {
-            TurnosConsultoriosMédicos turnosConsultoriosMédicos = new TurnosConsultoriosMédicos();
-            turnosConsultoriosMédicos.Show();
+            using var turnosConsultoriosMédicos = new TurnosConsultoriosMédicos();
+            turnosConsultoriosMédicos.ShowDialog(this);
         }
 
         private void EstudiosClínicos_Click(object sender, EventArgs e)

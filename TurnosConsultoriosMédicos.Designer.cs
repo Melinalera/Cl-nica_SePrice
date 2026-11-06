@@ -59,12 +59,14 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(377, 173);
+            label1.AutoSize = false;
+            label1.Font = new Font("Palatino Linotype", 14F, FontStyle.Bold);
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Location = new Point(34, 145);
             label1.Name = "label1";
-            label1.Size = new Size(38, 15);
+            label1.Size = new Size(730, 30);
             label1.TabIndex = 8;
-            label1.Text = "label1";
+            label1.Text = "Reserva de consultorios externos";
             // 
             // Dermatología
             // 
@@ -127,12 +129,15 @@
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(200, 23);
             dateTimePicker1.TabIndex = 15;
+            dateTimePicker1.Visible = false;
             // 
             // monthCalendar1
             // 
             monthCalendar1.Location = new Point(215, 203);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 16;
+            monthCalendar1.MaxSelectionCount = 1;
+            monthCalendar1.MinDate = DateTime.Today;
             // 
             // Guardia
             // 
@@ -144,36 +149,40 @@
             Guardia.TabStop = true;
             Guardia.Text = "Guardia";
             Guardia.UseVisualStyleBackColor = true;
+            Guardia.Visible = false;
             Guardia.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(494, 405);
+            btnAceptar.Location = new Point(340, 405);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(75, 23);
+            btnAceptar.Size = new Size(140, 27);
             btnAceptar.TabIndex = 18;
-            btnAceptar.Text = "Aceptar\r\n";
+            btnAceptar.Text = "Guardar reserva";
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
             // 
             // button2
             // 
-            button2.Location = new Point(575, 405);
+            button2.Location = new Point(490, 405);
             button2.Name = "button2";
-            button2.Size = new Size(75, 23);
+            button2.Size = new Size(140, 27);
             button2.TabIndex = 21;
-            button2.Text = "button2";
+            button2.Text = "Nueva reserva";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
             // button3
             // 
-            button3.Location = new Point(656, 405);
+            button3.Location = new Point(12, 12);
             button3.Name = "button3";
             button3.Size = new Size(75, 23);
             button3.TabIndex = 22;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            button3.Text = "Volver";
+            button3.BackColor = Color.Teal;
+            button3.ForeColor = SystemColors.ControlLight;
+            button3.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
+            button3.UseVisualStyleBackColor = false;
             // 
             // label2
             // 
@@ -182,7 +191,7 @@
             label2.Name = "label2";
             label2.Size = new Size(38, 15);
             label2.TabIndex = 23;
-            label2.Text = "label2";
+            label2.Text = "Especialidad";
             label2.Click += label2_Click;
             // 
             // comboBox1
@@ -192,6 +201,7 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(121, 23);
             comboBox1.TabIndex = 25;
+            comboBox1.Visible = false;
             // 
             // TurnosConsultoriosMédicos
             // 
