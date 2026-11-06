@@ -19,6 +19,10 @@ namespace Clínica_SePrice.vistas
             ventanaAnterior = anterior; // Guardamos la referencia
         }
 
+        public VistaTurnos()
+        {
+        }
+
         private void btnVolver_Click(object sender, EventArgs e)
         {
             if (ventanaAnterior != null)

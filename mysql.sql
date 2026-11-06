@@ -25,10 +25,14 @@ VALUES ('Melina', 'Lera', 'melina.l', '1234', 'paciente', 'melina.lera@email.com
 
 INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
 VALUES ('Milagros', 'Bianco', 'milagros.b', '1234', 'medico', 'milagros.bianco@clinica.com', '11-5555-1234');
-
+INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
+VALUES ('Cosme', 'Fulanito', 'cosme.f', '1234', 'medico', 'cosme.fulanito@clinica.com', '11-5578-1234');
+INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
+VALUES ('Lucas', 'Ledezma', 'lucas.l', '1234', 'medico', 'lucas.ledezma@clinica.com', '11-3455-1234');
 INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
 VALUES ('Ariel', 'Alfonzo', 'ariel.a', '1234', 'medico', 'ariel.alfonzo@clinica.com', '11-6666-5678');
-
+INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
+VALUES ('Uma', 'Insaurralde', 'uma.i', '1234', 'medico', 'uma.insaurralde@clinica.com', '11-6586-5678');
 INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
 VALUES ('Juan', 'Cáceres', 'juan.c', '1234', 'administrativo', 'juan.caceres@clinica.com', '11-7777-9876');
 
@@ -42,7 +46,15 @@ CREATE TABLE medicos (
 );
 
 INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (2, 45123, 'Cardiología');
-INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (3, 48910, 'Pediatría');
+INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (3, 48510, 'Dermatología');
+INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (4, 76910, 'Gastroenterología');
+INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (5, 75910, 'Neumonolología');
+INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (6, 26210, 'Neurología');
+
+
+
+
+
 
 -- 3. Tabla de Pacientes
 CREATE TABLE pacientes (
@@ -74,6 +86,7 @@ CREATE TABLE IF NOT exists turnosConsultoriosMédicos(
 id_turno INT auto_increment primary key,
 especialidad varchar (50) not null,
 fecha date not null,
+hora time not null,
 dni_paciente varchar(20),
 estado varchar (20) default 'Reservado'
 );

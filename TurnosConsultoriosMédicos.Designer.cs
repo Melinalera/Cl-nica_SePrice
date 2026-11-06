@@ -36,14 +36,13 @@
             Neumonología = new RadioButton();
             Neurología = new RadioButton();
             Cardiología = new RadioButton();
-            dateTimePicker1 = new DateTimePicker();
             monthCalendar1 = new MonthCalendar();
             Guardia = new RadioButton();
             btnAceptar = new Button();
-            button2 = new Button();
-            button3 = new Button();
             label2 = new Label();
             comboBox1 = new ComboBox();
+            Atrás = new Button();
+            Cancelar = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -98,7 +97,6 @@
             Neumonología.TabStop = true;
             Neumonología.Text = " Neumonología";
             Neumonología.UseVisualStyleBackColor = true;
-            Neumonología.CheckedChanged += this.Neumonología_CheckedChanged;
             // 
             // Neurología
             // 
@@ -122,13 +120,6 @@
             Cardiología.Text = "Cardiología";
             Cardiología.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Location = new Point(34, 81);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
-            dateTimePicker1.TabIndex = 15;
-            // 
             // monthCalendar1
             // 
             monthCalendar1.Location = new Point(215, 203);
@@ -145,7 +136,6 @@
             Guardia.TabStop = true;
             Guardia.Text = "Guardia";
             Guardia.UseVisualStyleBackColor = true;
-            Guardia.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // btnAceptar
             // 
@@ -157,25 +147,6 @@
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
             // 
-            // button2
-            // 
-            button2.Location = new Point(575, 405);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 21;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(656, 405);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 22;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -184,7 +155,6 @@
             label2.Size = new Size(38, 15);
             label2.TabIndex = 23;
             label2.Text = "label2";
-            label2.Click += label2_Click;
             // 
             // comboBox1
             // 
@@ -194,19 +164,38 @@
             comboBox1.Size = new Size(121, 23);
             comboBox1.TabIndex = 25;
             // 
+            // Atrás
+            // 
+            Atrás.Location = new Point(586, 405);
+            Atrás.Name = "Atrás";
+            Atrás.Size = new Size(75, 23);
+            Atrás.TabIndex = 26;
+            Atrás.Text = "Atrás";
+            Atrás.UseVisualStyleBackColor = true;
+            Atrás.Click += Atrás_Click;
+            // 
+            // Cancelar
+            // 
+            Cancelar.Location = new Point(678, 405);
+            Cancelar.Name = "Cancelar";
+            Cancelar.Size = new Size(75, 23);
+            Cancelar.TabIndex = 27;
+            Cancelar.Text = "Cancelar";
+            Cancelar.UseVisualStyleBackColor = true;
+            Cancelar.Click += Cancelar_Click;
+            // 
             // TurnosConsultoriosMédicos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(Cancelar);
+            Controls.Add(Atrás);
             Controls.Add(comboBox1);
             Controls.Add(label2);
-            Controls.Add(button3);
-            Controls.Add(button2);
             Controls.Add(btnAceptar);
             Controls.Add(Guardia);
             Controls.Add(monthCalendar1);
-            Controls.Add(dateTimePicker1);
             Controls.Add(Neurología);
             Controls.Add(Neumonología);
             Controls.Add(Gastroenterología);
@@ -222,11 +211,6 @@
             PerformLayout();
         }
 
-        private void Neumonología_CheckedChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         private PictureBox pictureBox1;
@@ -237,17 +221,16 @@
         private RadioButton radioButton4;
         private RadioButton radioButton5;
         private RadioButton Guardia;
-        private DateTimePicker dateTimePicker1;
         private MonthCalendar monthCalendar1;
         private RadioButton Cardiología;
         private RadioButton Dermatología;
         private RadioButton Gastroenterología;
         private RadioButton Neurología;
-        private Button button2;
-        private Button button3;
         private Label label2;
         private Button btnAceptar;
         private ComboBox comboBox1;
         private RadioButton Neumonología;
+        private Button Atrás;
+        private Button Cancelar;
     }
 }
