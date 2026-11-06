@@ -50,11 +50,17 @@ namespace Clínica_SePrice.vistas
 
                 const string consulta = """
                     
-                    SELECT id_turno , especialidad, fecha, dni_paciente, estado
-                    FROM `turnosConsultoriosMédicos`
-                    WHERE dni_paciente = @dni
-                        AND fecha = @fecha
-                    ORDER BY id_turno
+                    SELECT t.id_turno, t.especialidad, t.fecha, t.dni_paciente, t.estado,
+                           r.hora, CONCAT(u.apellido, ', ', u.nombre) AS medico,
+                           c.nombre AS consultorio
+                    FROM `turnosConsultoriosMédicos` t
+                    LEFT JOIN reservas_agenda_consultorios r ON r.id_turno = t.id_turno
+                    LEFT JOIN agendas_consultorios a ON a.id_agenda = r.id_agenda
+                    LEFT JOIN usuarios u ON u.id_usuario = a.id_medico
+                    LEFT JOIN consultorios c ON c.id_consultorio = a.id_consultorio
+                    WHERE t.dni_paciente = @dni
+                        AND t.fecha = @fecha
+                    ORDER BY r.hora, t.id_turno
                     """;
 
                 using var comando = new MySqlCommand(consulta, conexion);

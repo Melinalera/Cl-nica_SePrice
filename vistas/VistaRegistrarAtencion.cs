@@ -104,9 +104,13 @@ namespace Clínica_SePrice.vistas
                 cmbMedico.SelectedIndex = -1;
 
                 const string consultaTurnos = """
-                    SELECT t.id_turno, t.dni_paciente, t.especialidad, t.fecha, t.estado
+                    SELECT t.id_turno, t.dni_paciente, t.especialidad, t.fecha, t.estado,
+                           r.hora, CONCAT(u.apellido, ', ', u.nombre) AS medico_asignado
                     FROM `turnosConsultoriosMédicos` t
                     JOIN acreditaciones_consultorios a ON a.id_turno = t.id_turno
+                    LEFT JOIN reservas_agenda_consultorios r ON r.id_turno = t.id_turno
+                    LEFT JOIN agendas_consultorios g ON g.id_agenda = r.id_agenda
+                    LEFT JOIN usuarios u ON u.id_usuario = g.id_medico
                     WHERE t.fecha = @fecha AND t.estado = 'Acreditado'
                     ORDER BY a.fecha_acreditacion, t.id_turno
                     """;
@@ -170,13 +174,17 @@ namespace Clínica_SePrice.vistas
                                   WHERE m.id_usuario = @medico AND u.rol = 'medico'
                                     AND TRIM(m.especialidad) = TRIM(t.especialidad))
                       AND EXISTS (SELECT 1 FROM acreditaciones_consultorios a WHERE a.id_turno = t.id_turno)
+                      AND (NOT EXISTS (SELECT 1 FROM reservas_agenda_consultorios r WHERE r.id_turno = t.id_turno)
+                           OR EXISTS (SELECT 1 FROM reservas_agenda_consultorios r
+                                      JOIN agendas_consultorios a ON a.id_agenda = r.id_agenda
+                                      WHERE r.id_turno = t.id_turno AND a.id_medico = @medico))
                     """, conexion, transaccion);
                 actualizar.Parameters.AddWithValue("@turno", turno["id_turno"]);
                 actualizar.Parameters.AddWithValue("@fecha", DateTime.Today);
                 actualizar.Parameters.AddWithValue("@medico", medico["id_usuario"]);
                 if (actualizar.ExecuteNonQuery() != 1)
                 {
-                    aviso.Text = "El turno debe seguir acreditado para hoy y el médico debe tener la misma especialidad. Revisá y actualizá los datos.";
+                    aviso.Text = "Revisá el turno acreditado de hoy y el médico asignado. En turnos anteriores sin agenda, debe coincidir la especialidad.";
                     return;
                 }
 

@@ -56,6 +56,7 @@ El script 08 actualiza la estructura original de `pacientes`, conserva sus regis
 | 7 | `sql/07_resultados_estudios_guardia.sql` | Resultados y registro de entrega |
 | 8 | `sql/08_fichas_pacientes.sql` | Actualización de pacientes con ficha propia, DNI único y cuenta opcional |
 | 9 | `sql/09_agendas_consultorios.sql` | Consultorios, agendas por profesional y asignación de horarios a reservas |
+| 10 | `sql/10_integracion_turnos_master.sql` | Hora del turno y nuevos profesionales de ejemplo, conservando los perfiles existentes |
 
 La instalación base debe incluir `usuarios`, `medicos`, `pacientes`, `administrativos`, `turnosConsultoriosMédicos` e `insumos`. Conservar los nombres exactos, incluido el acento de `Médicos`.
 
@@ -70,7 +71,7 @@ SHOW TABLES;
 
 - **Insumos** permite crear lotes, registrar entradas, salidas y compras, consultar movimientos y buscar compras. Una compra ya genera la entrada y suma el stock.
 - **Turnos → Acreditar paciente** busca turnos del día por DNI y registra identidad y modalidad de pago.
-- **Turnos → Consultorios Externos** busca o registra la ficha del paciente por DNI y guarda una reserva por especialidad y día, con estado Reservado.
+- **Turnos → Consultorios Externos** busca o registra la ficha del paciente por DNI y reserva un horario de una agenda, con profesional y consultorio. Permite un sobreturno por hora del profesional sobre horarios regulares ocupados, y genera un comprobante imprimible.
 - **Turnos → Configurar agendas** crea consultorios y agendas por médico y fecha. Valida superposiciones y duraciones mínimas de 15 minutos, 25 para fisio-kinesiología y 30 para salud mental.
 - **Turnos → Registrar atención** permite seleccionar un turno acreditado de hoy, indicar el profesional de la misma especialidad, la práctica y el honorario.
 - **Estudios → Guardia / Internación** registra solicitudes sin turno.
@@ -87,7 +88,11 @@ Para probar acreditación y atención, ingresar el DNI en **Turnos → Consultor
 
 Después guardar una reserva con fecha del día y especialidad, y buscar ese DNI en **Acreditar paciente**. Crear la ficha no genera una cuenta ni una contraseña de acceso.
 
-La reserva actual es por día y especialidad. Las agendas ya se pueden configurar, pero todavía falta conectar la reserva con la selección de profesional, consultorio y horario disponible, y aplicar el límite de sobreturnos.
+Antes de reservar, configurar una agenda futura para el profesional. Los horarios disponibles se generan a partir de su duración y de las reservas existentes. Se comprueban nuevamente al guardar y se impiden reservas superpuestas para el paciente.
+
+El script 10 agrega la columna `hora` si falta. Los turnos anteriores sin horario conocido conservan ese dato vacío. También agrega los nuevos profesionales de ejemplo de master mediante sus nombres de usuario, sin modificar especialidades ni identificadores existentes. Por ejemplo, un perfil de Ariel ya registrado como Pediatría conserva esa especialidad.
+
+Las franjas horarias y los días de atención se obtienen de las agendas configuradas. El envío automático de correo queda pendiente de configuración e implementación. El código original de master tenía el envío SMTP comentado.
 
 Un profesional necesita un registro en `usuarios` con rol `medico` y otro en `medicos`, con especialidad y matrícula. El registro de cuentas del login todavía no completa automáticamente las tablas de perfiles. Las nuevas fichas creadas desde reservas pueden tener `id_usuario` nulo.
 
