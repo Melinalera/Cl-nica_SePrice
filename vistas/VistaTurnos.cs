@@ -45,7 +45,8 @@ namespace Clínica_SePrice.vistas
 
         private void EstudiosClínicos_Click(object sender, EventArgs e)
         {
-          
+            Estudios_Clínicos estudios_Clínicos = new Estudios_Clínicos();
+            estudios_Clínicos.Show();
         }
     }
 }

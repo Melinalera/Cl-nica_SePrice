@@ -125,6 +125,7 @@
             monthCalendar1.Location = new Point(215, 203);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 16;
+            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
             // 
             // Guardia
             // 

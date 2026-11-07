@@ -1,6 +1,10 @@
+CREATE DATABASE IF NOT EXISTS clínica_seprice;
 USE clínica_seprice;
 
--- 1. Limpieza previa de tablas en orden correcto
+-- 1. Limpieza previa de tablas en el orden correcto (evita conflictos de llaves foráneas)
+DROP TABLE IF EXISTS turnosEstudiosClínicos;
+DROP TABLE IF EXISTS turnosConsultoriosMédicos;
+DROP TABLE IF EXISTS insumos;
 DROP TABLE IF EXISTS administrativos;
 DROP TABLE IF EXISTS pacientes;
 DROP TABLE IF EXISTS medicos;
@@ -19,7 +23,7 @@ CREATE TABLE usuarios (
     PRIMARY KEY (id_usuario)
 );
 
--- Inserción de datos con nombre y apellido separados
+-- Inserción de datos en usuarios
 INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol, email, telefono) 
 VALUES ('Melina', 'Lera', 'melina.l', '1234', 'paciente', 'melina.lera@email.com', '11-4567-8901');
 
@@ -51,11 +55,6 @@ INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (4, 76910, 'Gas
 INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (5, 75910, 'Neumonolología');
 INSERT INTO medicos (id_usuario, matricula, especialidad) VALUES (6, 26210, 'Neurología');
 
-
-
-
-
-
 -- 3. Tabla de Pacientes
 CREATE TABLE pacientes (
     id_usuario INT NOT NULL,
@@ -76,20 +75,26 @@ CREATE TABLE administrativos (
 
 INSERT INTO administrativos (id_usuario, sector) VALUES (4, 'Mesa de Entradas y Turnos');
 
--- 5. Consultar las tablas para verificar
-SELECT * FROM usuarios;
-SELECT * FROM medicos;
-SELECT * FROM pacientes;
-SELECT * FROM administrativos;
-
-CREATE TABLE IF NOT exists turnosConsultoriosMédicos(
-id_turno INT auto_increment primary key,
-especialidad varchar (50) not null,
-fecha date not null,
-hora time not null,
-dni_paciente varchar(20),
-estado varchar (20) default 'Reservado'
+-- 5. Tablas de Turnos y Gestión
+CREATE TABLE IF NOT EXISTS turnosConsultoriosMédicos (
+    id_turno INT AUTO_INCREMENT PRIMARY KEY,
+    especialidad VARCHAR(50) NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    dni_paciente VARCHAR(20),
+    estado VARCHAR(20) DEFAULT 'Reservado'
 );
+
+-- Creada con 'estudio' en singular para coincidir perfectamente con C#
+CREATE TABLE IF NOT EXISTS turnosEstudiosClínicos (
+    id_turno INT AUTO_INCREMENT PRIMARY KEY,
+    estudio VARCHAR(50) NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    dni_paciente VARCHAR(20),
+    estado VARCHAR(20) DEFAULT 'Reservado'
+);
+
 CREATE TABLE IF NOT EXISTS insumos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -99,3 +104,9 @@ CREATE TABLE IF NOT EXISTS insumos (
     numero_lote VARCHAR(50) NOT NULL,
     fecha_vencimiento DATE NOT NULL
 );
+
+-- 6. Consultar las tablas para verificar
+SELECT * FROM usuarios;
+SELECT * FROM medicos;
+SELECT * FROM pacientes;
+SELECT * FROM administrativos;

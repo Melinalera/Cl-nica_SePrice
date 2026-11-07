@@ -322,5 +322,10 @@ namespace Clínica_SePrice
             // Este evento redirige de forma segura al manejador general de especialidades
             Especialidad_CheckedChanged(sender, e);
         }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+        }
     }
 }
