@@ -266,7 +266,7 @@ namespace Clínica_SePrice
             }
             catch (MySqlException ex) when (ex.Number == 1054 || ex.Number == 1146)
             {
-                lblAviso.Text = "Falta actualizar la base. Ejecutá los scripts 08, 09 y 10.";
+                lblAviso.Text = "Falta actualizar la base. Revisá los scripts 08 a 11.";
             }
             catch (MySqlException)
             {

@@ -100,3 +100,13 @@ CREATE TABLE IF NOT EXISTS insumos (
     numero_lote VARCHAR(50) NOT NULL,
     fecha_vencimiento DATE NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS `turnosEstudiosClínicos` (
+    id_turno INT AUTO_INCREMENT PRIMARY KEY,
+    estudio VARCHAR(50) NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    dni_paciente VARCHAR(20),
+    estado VARCHAR(20) DEFAULT 'Reservado',
+    CONSTRAINT uq_turnos_estudios_horario UNIQUE (estudio, fecha, hora)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

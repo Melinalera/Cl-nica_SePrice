@@ -57,6 +57,7 @@ El script 08 actualiza la estructura original de `pacientes`, conserva sus regis
 | 8 | `sql/08_fichas_pacientes.sql` | Actualización de pacientes con ficha propia, DNI único y cuenta opcional |
 | 9 | `sql/09_agendas_consultorios.sql` | Consultorios, agendas por profesional y asignación de horarios a reservas |
 | 10 | `sql/10_integracion_turnos_master.sql` | Hora del turno y nuevos profesionales de ejemplo, conservando los perfiles existentes |
+| 11 | `sql/11_turnos_estudios_clinicos.sql` | Turnos de estudios clínicos y control de horarios duplicados |
 
 La instalación base debe incluir `usuarios`, `medicos`, `pacientes`, `administrativos`, `turnosConsultoriosMédicos` e `insumos`. Conservar los nombres exactos, incluido el acento de `Médicos`.
 
@@ -73,6 +74,7 @@ SHOW TABLES;
 - **Turnos → Acreditar paciente** busca turnos del día por DNI y registra identidad y modalidad de pago.
 - **Turnos → Consultorios Externos** busca o registra la ficha del paciente por DNI y reserva un horario de una agenda, con profesional y consultorio. Permite un sobreturno por hora del profesional sobre horarios regulares ocupados, y genera un comprobante imprimible.
 - **Turnos → Configurar agendas** crea consultorios y agendas por médico y fecha. Valida superposiciones y duraciones mínimas de 15 minutos, 25 para fisio-kinesiología y 30 para salud mental.
+- **Turnos → Estudios Clínicos** registra una reserva para un paciente identificado, consulta horarios ocupados y genera comprobante. Utiliza los días y franjas de una hora definidos en la pantalla incorporada desde master. La agenda configurable, acreditación y realización de estudios programados siguen pendientes.
 - **Turnos → Registrar atención** permite seleccionar un turno acreditado de hoy, indicar el profesional de la misma especialidad, la práctica y el honorario.
 - **Estudios → Guardia / Internación** registra solicitudes sin turno.
 - **Estudios → Solicitudes de guardia / internación** permite consultar por estado y prioridad, iniciar, cancelar y finalizar estudios. Al finalizar se registra el consumo por lote.
@@ -91,6 +93,10 @@ Después guardar una reserva con fecha del día y especialidad, y buscar ese DNI
 Antes de reservar, configurar una agenda futura para el profesional. Los horarios disponibles se generan a partir de su duración y de las reservas existentes. Se comprueban nuevamente al guardar y se impiden reservas superpuestas para el paciente.
 
 El script 10 agrega la columna `hora` si falta. Los turnos anteriores sin horario conocido conservan ese dato vacío. También agrega los nuevos profesionales de ejemplo de master mediante sus nombres de usuario, sin modificar especialidades ni identificadores existentes. Por ejemplo, un perfil de Ariel ya registrado como Pediatría conserva esa especialidad.
+
+La integración de Estudios Clínicos requiere el script 11, también para comprobar que un paciente no reserve una consulta y un estudio superpuestos. Si ya existía la tabla con horarios duplicados, el índice único fallará y esos registros deberán revisarse antes de continuar. La columna `dni_paciente` conserva la compatibilidad con registros anteriores, pero la pantalla exige buscar o registrar al paciente.
+
+Laboratorio se mantiene sin turno previo. La pantalla informa sus franjas con y sin ayuno, y no permite reservarlo como estudio programado. La recepción y espera por orden de llegada siguen pendientes.
 
 Las franjas horarias y los días de atención se obtienen de las agendas configuradas. El envío automático de correo queda pendiente de configuración e implementación. El código original de master tenía el envío SMTP comentado.
 

@@ -77,6 +77,30 @@ namespace Clínica_SePrice
             }
         }
 
+        // Ambos circuitos bloquean primero la ficha del paciente antes de comprobar cruces.
+        internal static void VerificarDisponibilidadPaciente(MySqlConnection conexion,
+            MySqlTransaction transaccion, string dni, DateTime fecha, TimeSpan inicio, TimeSpan fin)
+        {
+            using var consulta = new MySqlCommand("""
+                SELECT r.id_turno FROM reservas_agenda_consultorios r
+                JOIN agendas_consultorios a ON a.id_agenda = r.id_agenda
+                JOIN `turnosConsultoriosMédicos` t ON t.id_turno = r.id_turno
+                WHERE t.dni_paciente = @dni AND a.fecha = @fecha
+                  AND r.hora < @fin
+                  AND ADDTIME(r.hora, SEC_TO_TIME(a.duracion_minutos * 60)) > @inicio
+                UNION ALL
+                SELECT id_turno FROM `turnosEstudiosClínicos`
+                WHERE dni_paciente = @dni AND fecha = @fecha
+                  AND hora < @fin AND ADDTIME(hora, '01:00:00') > @inicio
+                LIMIT 1
+                """, conexion, transaccion);
+            consulta.Parameters.AddWithValue("@dni", dni);
+            consulta.Parameters.AddWithValue("@fecha", fecha);
+            consulta.Parameters.AddWithValue("@inicio", inicio);
+            consulta.Parameters.AddWithValue("@fin", fin);
+            if (consulta.ExecuteScalar() != null)
+                throw new InvalidOperationException("El paciente ya tiene un turno de consulta o estudio que se superpone con ese horario.");
+        }
         internal static long Reservar(int idPaciente, string dni, int idAgenda, TimeSpan hora, bool sobreturno)
         {
             using var conexion = new MySqlConnection(ConexionBaseDatos.CadenaConexion);
@@ -115,21 +139,7 @@ namespace Clínica_SePrice
             agendaAdaptador.Fill(datosAgenda);
             DataRow agenda = datosAgenda.Rows[0];
             TimeSpan fin = hora.Add(TimeSpan.FromMinutes(Convert.ToInt32(agenda["duracion_minutos"])));
-            using var superposicion = new MySqlCommand("""
-                SELECT r.id_turno FROM reservas_agenda_consultorios r
-                JOIN agendas_consultorios a ON a.id_agenda = r.id_agenda
-                JOIN `turnosConsultoriosMédicos` t ON t.id_turno = r.id_turno
-                WHERE t.dni_paciente = @dni AND a.fecha = @fecha
-                  AND r.hora < @fin
-                  AND ADDTIME(r.hora, SEC_TO_TIME(a.duracion_minutos * 60)) > @inicio
-                LIMIT 1
-                """, conexion, transaccion);
-            superposicion.Parameters.AddWithValue("@dni", dni);
-            superposicion.Parameters.AddWithValue("@fecha", agenda["fecha"]);
-            superposicion.Parameters.AddWithValue("@inicio", hora);
-            superposicion.Parameters.AddWithValue("@fin", fin);
-            if (superposicion.ExecuteScalar() != null)
-                throw new InvalidOperationException("El paciente ya tiene una reserva que se superpone con ese horario.");
+            VerificarDisponibilidadPaciente(conexion, transaccion, dni, (DateTime)agenda["fecha"], hora, fin);
 
             using var insertar = new MySqlCommand("""
                 INSERT INTO `turnosConsultoriosMédicos` (especialidad, fecha, hora, dni_paciente, estado)

@@ -72,7 +72,8 @@ namespace Clínica_SePrice.vistas
 
         private void EstudiosClínicos_Click(object sender, EventArgs e)
         {
-
+            using var ventana = new Estudios_Clínicos();
+            ventana.ShowDialog(this);
         }
 
         private void btnAcreditar_Click(object sender, EventArgs e)
